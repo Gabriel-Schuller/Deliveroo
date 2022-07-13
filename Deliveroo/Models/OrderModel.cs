@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Deliveroo.Models
 {
@@ -9,6 +11,9 @@ namespace Deliveroo.Models
 
         [Required]
         public string ContactPhoneNumber { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public DateTime OrderDate { get; set; } = DateTime.UtcNow;
 
 
     }
