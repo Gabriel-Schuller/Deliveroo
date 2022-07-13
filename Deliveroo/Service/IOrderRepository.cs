@@ -12,5 +12,9 @@ namespace Deliveroo.Service
         
         Task<Order> GetOrderById(Guid orderId);
         Task<List<Order>> GetUserOrders(Guid id);
+
+        Task<List<Order>> GetAllOrdersOnSpecificDate(DateTime date);
+
+        Task<List<Order>> GetAllOrdersFromSpecificDate(DateTime date);
     }
 }

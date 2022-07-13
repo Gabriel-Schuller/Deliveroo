@@ -21,6 +21,7 @@ namespace Deliveroo.Service.Repositories
             return await _context.Orders.ToListAsync();
         }
 
+
         public async Task<Order> GetOrderById(Guid orderId)
         {
             return await _context.Orders.FindAsync(orderId);
@@ -31,6 +32,17 @@ namespace Deliveroo.Service.Repositories
            
 
             return await _context.Orders.Where(o => o.UserID == id).ToListAsync();
+        }
+
+
+        public async Task<List<Order>> GetAllOrdersFromSpecificDate(DateTime date)
+        {
+            return await _context.Orders.Where(o => DateTime.Compare(o.OrderDate, date) >= 0).ToListAsync();
+        }
+
+        public async Task<List<Order>> GetAllOrdersOnSpecificDate(DateTime date)
+        {
+            return await _context.Orders.Where(o => DateTime.Compare(date.Date, o.OrderDate.Date) == 0).ToListAsync();
         }
     }
 }
