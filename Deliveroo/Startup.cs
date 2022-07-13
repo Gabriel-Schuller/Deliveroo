@@ -1,4 +1,5 @@
 using Deliveroo.Service;
+using Deliveroo.Service.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -40,6 +41,10 @@ namespace Deliveroo
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+            services.AddScoped<IBaseRepository, BaseRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
         }
 
