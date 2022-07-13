@@ -24,6 +24,8 @@ namespace Deliveroo.Data.Entities
 
         public string UserPhoneNumber { get; set; }
 
+        public string Role { get; set; } = "User";
+
 
     }
 }
