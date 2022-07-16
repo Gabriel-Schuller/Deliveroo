@@ -25,7 +25,7 @@ namespace Deliveroo.Data.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime OrderDate { get; set; } = DateTime.UtcNow;
 
-        public Address address { get; set; }
+        public Address Address { get; set; }
 
 
 

@@ -26,6 +26,10 @@ namespace Deliveroo.Data.Entities
 
         public string Role { get; set; } = "User";
 
+        public Guid AddressID { get; set; }
+
+        public Address UserAddress { get; set; }
+
 
     }
 }
