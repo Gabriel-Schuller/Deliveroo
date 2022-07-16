@@ -45,6 +45,7 @@ namespace Deliveroo
             services.AddScoped<IBaseRepository, BaseRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IAddressRepository, AddressRepository>();
 
         }
 

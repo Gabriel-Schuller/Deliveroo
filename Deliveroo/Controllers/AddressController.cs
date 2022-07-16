@@ -13,14 +13,14 @@ namespace Deliveroo.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderController : ControllerBase
+    public class AddressController : ControllerBase
     {
         private readonly IAddressRepository _repository;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
         private readonly IBaseRepository _baseRepository;
 
-        public OrderController(IAddressRepository repository, LinkGenerator linkGenerator, IMapper mapper, IBaseRepository baseRepository)
+        public AddressController(IAddressRepository repository, LinkGenerator linkGenerator, IMapper mapper, IBaseRepository baseRepository)
         {
             _repository = repository;
             _linkGenerator = linkGenerator;
@@ -79,6 +79,19 @@ namespace Deliveroo.Controllers
             try
             {
                 return await _repository.GetAddressesByPostalCode(code);
+            }
+            catch (Exception)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Server error");
+            }
+        }
+
+        [HttpGet("/order/{orderId}")]
+        public async Task<ActionResult<Address>> GetAddressByOrderID(Guid orderId)
+        {
+            try
+            {
+                return await _repository.GetOrderAddress(orderId);
             }
             catch (Exception)
             {

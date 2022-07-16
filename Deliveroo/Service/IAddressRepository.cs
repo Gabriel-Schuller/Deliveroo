@@ -13,7 +13,7 @@ namespace Deliveroo.Service
 
         Task<List<Address>> GetAddressesByCity(string city);
         Task<List<Address>> GetAddressesByPostalCode(string code);
-        Task<List<Address>> GetOrderAddress(Guid orderId);
+        Task<Address> GetOrderAddress(Guid orderId);
     
     }
 }
