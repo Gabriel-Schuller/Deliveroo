@@ -20,6 +20,11 @@ namespace Deliveroo.Service.Repositories
             return await _context.Address.Where(a => a.City == city).ToListAsync();
         }
 
+        public async Task<Address> GetAddressById(Guid addressId)
+        {
+            return await _context.Address.FindAsync(addressId);
+        }
+
         public async Task<List<Address>> GetAddressesByPostalCode(string code)
         {
             return await _context.Address.Where(a => a.PostalCode == code).ToListAsync();

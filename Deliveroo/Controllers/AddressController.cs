@@ -99,5 +99,94 @@ namespace Deliveroo.Controllers
             }
         }
 
+        [HttpGet("{addressId}")]
+        public async Task<ActionResult<AddressModel>> GetAddressById(Guid id)
+        {
+            try
+            {
+
+                var address = await _repository.GetOrderAddress(id);
+                return _mapper.Map<AddressModel>(address);
+            }
+            catch (Exception)
+            {
+
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Server error");
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<AddressModel>> AddAddress([FromBody] AddressModel model)
+        {
+            try
+            {
+                var address = _mapper.Map<Address>(model);
+                _baseRepository.Add(address);
+                if (await _baseRepository.SaveChangesAsync())
+                {
+                    var location = _linkGenerator.GetPathByAction("GetAddressById", "Address", new { addressId = address.AddressID });
+                    if (string.IsNullOrWhiteSpace(location))
+                    {
+                        return BadRequest("Could not use current id");
+                    }
+                    return Created(location, _mapper.Map<AddressModel>(address));
+                }
+            }
+            catch (Exception)
+            {
+
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Server error");
+            }
+            return BadRequest();
+        }
+
+        [HttpPut("{addressId}")]
+        public async Task<ActionResult<AddressModel>> UpdateAddress(Guid addressId, AddressModel model)
+        {
+            try
+            {
+                var oldAddress = await _repository.GetAddressById(addressId);
+                if (oldAddress == null)
+                {
+                    return NotFound("Address with the specified id does not exist");
+                }
+                _mapper.Map(model, oldAddress);
+                if (await _baseRepository.SaveChangesAsync())
+                {
+                    return _mapper.Map<AddressModel>(oldAddress);
+                }
+            }
+            catch (Exception)
+            {
+
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Server error");
+            }
+            return BadRequest();
+        }
+
+        [HttpDelete("{addressId}")]
+        public async Task<IActionResult> DeleteAddress(Guid addressId)
+        {
+            try
+            {
+                var oldAddress = await _repository.GetAddressById(addressId);
+                if (oldAddress == null)
+                {
+                    return NotFound("There is no address with the specified id");
+                }
+                _baseRepository.Delete(oldAddress);
+                if (await _baseRepository.SaveChangesAsync())
+                {
+                    return Ok();
+                }
+            }
+            catch (Exception)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Server error");
+            }
+            return BadRequest("Failed to delete the address!");
+        }
+
+
     }
 }
