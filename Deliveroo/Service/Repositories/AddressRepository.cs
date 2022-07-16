@@ -34,5 +34,11 @@ namespace Deliveroo.Service.Repositories
         {
             return await _context.Orders.Where(o => o.UserID == userId).Select(a => a.Address).ToListAsync();
         }
+
+        public async Task<Address> GetOrderAddress(Guid orderId)
+        {
+            var order =await _context.Orders.FindAsync(orderId);
+            return order.Address;
+        }
     }
 }
