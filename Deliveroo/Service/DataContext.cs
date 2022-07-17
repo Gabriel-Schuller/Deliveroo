@@ -16,6 +16,5 @@ namespace Deliveroo.Service
         public DbSet<User> Users { get; set; }
         public DbSet<Address> Address { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<Package> Packages { get; set; }
     }
 }

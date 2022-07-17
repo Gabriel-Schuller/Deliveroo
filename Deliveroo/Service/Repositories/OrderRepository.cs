@@ -1,4 +1,5 @@
 ﻿using Deliveroo.Data.Entities;
+using Deliveroo.Utils;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,16 @@ namespace Deliveroo.Service.Repositories
         public async Task<List<Order>> GetAllOrdersOnSpecificDate(DateTime date)
         {
             return await _context.Orders.Where(o => DateTime.Compare(date.Date, o.OrderDate.Date) == 0).ToListAsync();
+        }
+
+        public int CalculatePrice(Order order)
+        {
+            int calculatedPrice = (order.TotalWeight / Util.WeightDivider) * Util.Price;
+            if (order.TotalWeight % Util.WeightDivider != 0)
+            {
+                calculatedPrice += Util.Price;
+            }
+            return 1;
         }
     }
 }

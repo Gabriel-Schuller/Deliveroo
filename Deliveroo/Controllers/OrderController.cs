@@ -13,14 +13,14 @@ namespace Deliveroo.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AddressController : ControllerBase
+    public class OrderController : ControllerBase
     {
-        private readonly IAddressRepository _repository;
+        private readonly IOrderRepository _repository;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
         private readonly IBaseRepository _baseRepository;
 
-        public AddressController(IAddressRepository repository, LinkGenerator linkGenerator, IMapper mapper, IBaseRepository baseRepository)
+        public OrderController(IOrderRepository repository, LinkGenerator linkGenerator, IMapper mapper, IBaseRepository baseRepository)
         {
             _repository = repository;
             _linkGenerator = linkGenerator;
@@ -29,12 +29,11 @@ namespace Deliveroo.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Address>>> Get()
+        public async Task<ActionResult<List<Order>>> Get()
         {
             try
             {
-                return await _repository.GetAllAddresses();
-
+                return await _repository.GetAllOrders();
             }
             catch (Exception)
             {
@@ -43,13 +42,13 @@ namespace Deliveroo.Controllers
             }
         }
 
-        [HttpGet("/getbyuser/{userID}")]
-        public async Task<ActionResult<List<Address>>> GetAddressByUser(Guid userID)
+
+        [HttpGet("{orderId}")]
+        public async Task<ActionResult<Order>> GetSpecificOrder(Guid orderId)
         {
             try
             {
-                return await _repository.GetAllUserAddresses(userID);
-
+                return await _repository.GetOrderById(orderId);
             }
             catch (Exception)
             {
@@ -58,13 +57,13 @@ namespace Deliveroo.Controllers
             }
         }
 
-        [HttpGet("/city/{city}")]
-        public async Task<ActionResult<List<Address>>> GetAddressByCity(string city)
+
+        [HttpGet("/user/{userId}")]
+        public async Task<ActionResult<List<Order>>> GetUserOrder(Guid userId)
         {
             try
             {
-                return await _repository.GetAddressesByCity(city);
-
+                return await _repository.GetUserOrders(userId);
             }
             catch (Exception)
             {
@@ -73,40 +72,28 @@ namespace Deliveroo.Controllers
             }
         }
 
-        [HttpGet("/postalcode/{code}")]
-        public async Task<ActionResult<List<Address>>> GetAddressByCode(string code)
+
+        [HttpGet("/fromDate/{fromDate}")]
+        public async Task<ActionResult<List<Order>>> GetOrdersFromSpecificDate(DateTime fromDate)
         {
             try
             {
-                return await _repository.GetAddressesByPostalCode(code);
+                return await _repository.GetAllOrdersFromSpecificDate(fromDate);
             }
             catch (Exception)
             {
+
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Server error");
             }
         }
+        
 
-        [HttpGet("/order/{orderId}")]
-        public async Task<ActionResult<Address>> GetAddressByOrderID(Guid orderId)
+        [HttpGet("/onDate/{theDate}")]
+        public async Task<ActionResult<List<Order>>> GetOrdersOnSpecificDate(DateTime theDate)
         {
             try
             {
-                return await _repository.GetOrderAddress(orderId);
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Server error");
-            }
-        }
-
-        [HttpGet("{addressId}")]
-        public async Task<ActionResult<OrderModel>> GetAddressById(Guid addressId)
-        {
-            try
-            {
-
-                var address = await _repository.GetAddressById(addressId);
-                return _mapper.Map<OrderModel>(address);
+                return await _repository.GetAllOrdersOnSpecificDate(theDate);
             }
             catch (Exception)
             {
@@ -116,20 +103,21 @@ namespace Deliveroo.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<OrderModel>> AddAddress([FromBody] OrderModel model)
+        public async Task<ActionResult<OrderModel>> AddOrder([FromBody] OrderModel model)
         {
             try
             {
-                var address = _mapper.Map<Address>(model);
-                _baseRepository.Add(address);
+                var order = _mapper.Map<Order>(model);
+                order.AproxCost = _repository.CalculatePrice(order);
+                _baseRepository.Add(order);
                 if (await _baseRepository.SaveChangesAsync())
                 {
-                    var location = _linkGenerator.GetPathByAction("GetAddressById", "Address", new { addressId = address.AddressID });
+                    var location = _linkGenerator.GetPathByAction("GetSpecificOrder", "Order", new { orderId = order.OrderID });
                     if (string.IsNullOrWhiteSpace(location))
                     {
                         return BadRequest("Could not use current id");
                     }
-                    return Created(location, _mapper.Map<OrderModel>(address));
+                    return Created(location, _mapper.Map<OrderModel>(order));
                 }
             }
             catch (Exception)
@@ -140,20 +128,20 @@ namespace Deliveroo.Controllers
             return BadRequest();
         }
 
-        [HttpPut("{addressId}")]
-        public async Task<ActionResult<OrderModel>> UpdateAddress(Guid addressId, OrderModel model)
+        [HttpPut("{orderId}")]
+        public async Task<ActionResult<OrderModel>> UpdateAddress(Guid orderId, OrderModel model)
         {
             try
             {
-                var oldAddress = await _repository.GetAddressById(addressId);
-                if (oldAddress == null)
+                var oldOrder = await _repository.GetOrderById(orderId);
+                if (oldOrder == null)
                 {
-                    return NotFound("Address with the specified id does not exist");
+                    return NotFound("Order with the specified id does not exist");
                 }
-                _mapper.Map(model, oldAddress);
+                _mapper.Map(model, oldOrder);
                 if (await _baseRepository.SaveChangesAsync())
                 {
-                    return _mapper.Map<OrderModel>(oldAddress);
+                    return _mapper.Map<OrderModel>(oldOrder);
                 }
             }
             catch (Exception)
@@ -164,17 +152,18 @@ namespace Deliveroo.Controllers
             return BadRequest();
         }
 
-        [HttpDelete("{addressId}")]
-        public async Task<IActionResult> DeleteAddress(Guid addressId)
+
+        [HttpDelete("{orderId}")]
+        public async Task<IActionResult> DeleteAddress(Guid orderId)
         {
             try
             {
-                var oldAddress = await _repository.GetAddressById(addressId);
-                if (oldAddress == null)
+                var oldOrder = await _repository.GetOrderById(orderId);
+                if (oldOrder == null)
                 {
-                    return NotFound("There is no address with the specified id");
+                    return NotFound("There is no order with the specified id");
                 }
-                _baseRepository.Delete(oldAddress);
+                _baseRepository.Delete(oldOrder);
                 if (await _baseRepository.SaveChangesAsync())
                 {
                     return Ok();
@@ -184,9 +173,8 @@ namespace Deliveroo.Controllers
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Server error");
             }
-            return BadRequest("Failed to delete the address!");
+            return BadRequest("Failed to delete the order!");
         }
-
 
     }
 }

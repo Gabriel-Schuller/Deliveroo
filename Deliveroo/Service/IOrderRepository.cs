@@ -16,5 +16,8 @@ namespace Deliveroo.Service
         Task<List<Order>> GetAllOrdersOnSpecificDate(DateTime date);
 
         Task<List<Order>> GetAllOrdersFromSpecificDate(DateTime date);
+
+        int CalculatePrice(Order order);
+
     }
 }
