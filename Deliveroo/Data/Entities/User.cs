@@ -28,7 +28,6 @@ namespace Deliveroo.Data.Entities
 
         public Guid AddressID { get; set; }
 
-        public Address UserAddress { get; set; }
 
 
     }

@@ -43,7 +43,7 @@ namespace Deliveroo.Controllers
             }
         }
 
-        [HttpGet("{userID}")]
+        [HttpGet("/getbyuser/{userID}")]
         public async Task<ActionResult<List<Address>>> GetAddressByUser(Guid userID)
         {
             try
@@ -100,12 +100,12 @@ namespace Deliveroo.Controllers
         }
 
         [HttpGet("{addressId}")]
-        public async Task<ActionResult<AddressModel>> GetAddressById(Guid id)
+        public async Task<ActionResult<AddressModel>> GetAddressById(Guid addressId)
         {
             try
             {
 
-                var address = await _repository.GetOrderAddress(id);
+                var address = await _repository.GetAddressById(addressId);
                 return _mapper.Map<AddressModel>(address);
             }
             catch (Exception)

@@ -1,4 +1,6 @@
-﻿using Deliveroo.Data.Entities;
+﻿using AutoMapper;
+using Deliveroo.Data.Entities;
+using Deliveroo.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,10 +12,19 @@ namespace Deliveroo.Service.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public UserRepository(DataContext context)
+        public UserRepository(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
+        }
+
+        public Address GetEmptyUserAddress()
+        {
+            var address= _mapper.Map<Address>(new AddressModel());
+            address.AddressID = Guid.NewGuid();
+            return address;
         }
 
         public async Task<List<User>> GetAllAdministratorsAsync()

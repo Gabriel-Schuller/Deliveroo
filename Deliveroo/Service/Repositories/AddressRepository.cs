@@ -37,12 +37,15 @@ namespace Deliveroo.Service.Repositories
 
         public async Task<List<Address>> GetAllUserAddresses(Guid userId)
         {
-            return await _context.Orders.Where(o => o.UserID == userId).Select(a => a.Address).ToListAsync();
+            var addresses= await _context.Orders.Where(o => o.UserID == userId).Select(a => a.Address).ToListAsync();
+            var user = await _context.Users.FindAsync(userId);
+            addresses.Add(await GetAddressById(user.AddressID));
+            return addresses;
         }
 
         public async Task<Address> GetOrderAddress(Guid orderId)
         {
-            var order =await _context.Orders.FindAsync(orderId);
+            var order = await _context.Orders.FindAsync(orderId);
             return order.Address;
         }
     }

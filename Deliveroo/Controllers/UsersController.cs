@@ -104,6 +104,10 @@ namespace Deliveroo.Controllers
             {
                 var user = _mapper.Map<User>(model);
                 user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                var emptyAddress = _repository.GetEmptyUserAddress();
+
+                _baseRepository.Add(emptyAddress);
+                user.AddressID = emptyAddress.AddressID;
 
                 _baseRepository.Add(user);
 
