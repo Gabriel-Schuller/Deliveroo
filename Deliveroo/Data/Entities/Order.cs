@@ -13,7 +13,12 @@ namespace Deliveroo.Data.Entities
 
         public User User { get; set; }
 
-        public List<Package> Package { get; set; }
+        [Required]
+        [Range(1,10)]
+        public int NumberOfBaggages { get; set; }
+        [Required]
+        [Range(5,200)]
+        public int TotalWeight { get; set; }
 
         [Required]
         public string Destination { get; set; }
@@ -26,6 +31,8 @@ namespace Deliveroo.Data.Entities
         public DateTime OrderDate { get; set; } = DateTime.UtcNow;
 
         public Address Address { get; set; }
+
+        public int AproxCost { get; set; }
 
 
 
