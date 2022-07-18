@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Deliveroo.Data.Entities;
+using Deliveroo.Helpers;
 using Deliveroo.Models;
 using Deliveroo.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -21,13 +23,16 @@ namespace Deliveroo.Controllers
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
         private readonly IBaseRepository _baseRepository;
+        private readonly JwtService _jwtService;
 
-        public UsersController(IUserRepository repository, LinkGenerator linkGenerator, IMapper mapper, IBaseRepository baseRepository)
+        public UsersController(IUserRepository repository, LinkGenerator linkGenerator, IMapper mapper, 
+            IBaseRepository baseRepository, JwtService jwtService)
         {
             _repository = repository;
             _linkGenerator = linkGenerator;
             _mapper = mapper;
             _baseRepository = baseRepository;
+            _jwtService = jwtService;
         }
 
 
@@ -136,6 +141,41 @@ namespace Deliveroo.Controllers
         }
 
         //TO DO IMPLEMENT LOGIN AND LOGOUT FUNCTIONALITY
+
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public async Task<ActionResult<string>> Login(UserModel model)
+        {
+            try
+            {
+                var user = await _repository.GetUserByEmail(model.EmailAddress);
+                if (user == null) return BadRequest(new { message = "User doesn't exist" });
+
+                if (!BCrypt.Net.BCrypt.Verify(model.Password, user.Password))
+                {
+                    return BadRequest(new { message = "User doesn't exist" });
+                }
+
+                var jwt = _jwtService.Generate(user);
+
+                Response.Cookies.Append("jwt", jwt, new CookieOptions
+                {
+                    Secure = true,
+                    HttpOnly = true,
+                    IsEssential = true,
+                    Expires = DateTime.Now.AddMonths(1),
+                    SameSite = SameSiteMode.None
+
+                });
+
+                return Ok(jwt);
+            }
+            catch (Exception)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Server error");
+            }
+        }
+
 
         [HttpPut("{id}")]
         public async Task<ActionResult<UserModel>> Put(Guid id, UserModel model)

@@ -1,6 +1,6 @@
 ﻿namespace Deliveroo.Models
 {
-    public class OrderModel
+    public class AddressModel
     {
 
         public string City { get; set; }

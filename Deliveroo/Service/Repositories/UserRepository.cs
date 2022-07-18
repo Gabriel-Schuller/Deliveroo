@@ -22,7 +22,7 @@ namespace Deliveroo.Service.Repositories
 
         public Address GetEmptyUserAddress()
         {
-            var address= _mapper.Map<Address>(new OrderModel());
+            var address= _mapper.Map<Address>(new AddressModel());
             address.AddressID = Guid.NewGuid();
             return address;
         }

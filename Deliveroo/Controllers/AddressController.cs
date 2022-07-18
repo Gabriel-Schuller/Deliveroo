@@ -100,13 +100,13 @@ namespace Deliveroo.Controllers
         }
 
         [HttpGet("{addressId}")]
-        public async Task<ActionResult<OrderModel>> GetAddressById(Guid addressId)
+        public async Task<ActionResult<AddressModel>> GetAddressById(Guid addressId)
         {
             try
             {
 
                 var address = await _repository.GetAddressById(addressId);
-                return _mapper.Map<OrderModel>(address);
+                return _mapper.Map<AddressModel>(address);
             }
             catch (Exception)
             {
@@ -116,7 +116,7 @@ namespace Deliveroo.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<OrderModel>> AddAddress([FromBody] OrderModel model)
+        public async Task<ActionResult<AddressModel>> AddAddress([FromBody] AddressModel model)
         {
             try
             {
@@ -129,7 +129,7 @@ namespace Deliveroo.Controllers
                     {
                         return BadRequest("Could not use current id");
                     }
-                    return Created(location, _mapper.Map<OrderModel>(address));
+                    return Created(location, _mapper.Map<AddressModel>(address));
                 }
             }
             catch (Exception)
@@ -141,7 +141,7 @@ namespace Deliveroo.Controllers
         }
 
         [HttpPut("{addressId}")]
-        public async Task<ActionResult<OrderModel>> UpdateAddress(Guid addressId, OrderModel model)
+        public async Task<ActionResult<AddressModel>> UpdateAddress(Guid addressId, AddressModel model)
         {
             try
             {
@@ -153,7 +153,7 @@ namespace Deliveroo.Controllers
                 _mapper.Map(model, oldAddress);
                 if (await _baseRepository.SaveChangesAsync())
                 {
-                    return _mapper.Map<OrderModel>(oldAddress);
+                    return _mapper.Map<AddressModel>(oldAddress);
                 }
             }
             catch (Exception)
