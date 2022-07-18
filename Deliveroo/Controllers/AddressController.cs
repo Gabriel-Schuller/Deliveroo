@@ -2,6 +2,7 @@
 using Deliveroo.Data.Entities;
 using Deliveroo.Models;
 using Deliveroo.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -29,6 +30,7 @@ namespace Deliveroo.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<List<Address>>> Get()
         {
             try
@@ -59,6 +61,7 @@ namespace Deliveroo.Controllers
         }
 
         [HttpGet("/city/{city}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<List<Address>>> GetAddressByCity(string city)
         {
             try
@@ -74,6 +77,7 @@ namespace Deliveroo.Controllers
         }
 
         [HttpGet("/postalcode/{code}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<List<Address>>> GetAddressByCode(string code)
         {
             try

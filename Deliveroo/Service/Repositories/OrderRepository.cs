@@ -1,5 +1,4 @@
 ﻿using Deliveroo.Data.Entities;
-using Deliveroo.Utils;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,6 +10,9 @@ namespace Deliveroo.Service.Repositories
     public class OrderRepository : IOrderRepository
     {
         private readonly DataContext _context;
+
+        public const int WeightDivider = 30;
+        public const int Price = 20;
 
         public OrderRepository(DataContext context)
         {
@@ -48,10 +50,10 @@ namespace Deliveroo.Service.Repositories
 
         public int CalculatePrice(Order order)
         {
-            int calculatedPrice = (order.TotalWeight / Util.WeightDivider) * Util.Price;
-            if (order.TotalWeight % Util.WeightDivider != 0)
+            int calculatedPrice = (order.TotalWeight / WeightDivider) * Price;
+            if (order.TotalWeight % WeightDivider != 0)
             {
-                calculatedPrice += Util.Price;
+                calculatedPrice += Price;
             }
             return 1;
         }

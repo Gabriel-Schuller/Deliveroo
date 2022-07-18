@@ -37,6 +37,7 @@ namespace Deliveroo.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<List<User>>> GetAllUsers()
         {
             try
@@ -53,6 +54,7 @@ namespace Deliveroo.Controllers
         }
 
         [HttpGet("/all-admins")]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<List<User>>> GetAllAdmins()
         {
             try
@@ -69,6 +71,7 @@ namespace Deliveroo.Controllers
 
 
         [HttpGet("{userID}")]
+        [Authorize]
         public async Task<ActionResult<UserModel>> Get(Guid userID, bool makeAdmin = false)
         {
             try
@@ -98,6 +101,7 @@ namespace Deliveroo.Controllers
         }
 
         [HttpPost("register")]
+        [AllowAnonymous]
         public async Task<ActionResult<UserModel>> Post([FromBody] UserModel model)
         {
 
@@ -142,8 +146,8 @@ namespace Deliveroo.Controllers
 
         //TO DO IMPLEMENT LOGIN AND LOGOUT FUNCTIONALITY
 
-        [AllowAnonymous]
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<ActionResult<string>> Login(UserModel model)
         {
             try
@@ -178,6 +182,7 @@ namespace Deliveroo.Controllers
 
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult<UserModel>> Put(Guid id, UserModel model)
         {
             try
@@ -202,7 +207,35 @@ namespace Deliveroo.Controllers
             return BadRequest();
         }
 
+        [HttpPatch("/makeAdmin/{id}")]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> MakeAdmin(Guid id)
+        {
+            try
+            {
+                var oldUser = await _repository.GetById(id);
+                if (oldUser == null)
+                {
+                    return NotFound("User with the specified id does not exist");
+                }
+                oldUser.Role = "Administrator";
+
+                if (await _baseRepository.SaveChangesAsync())
+                {
+                    return Ok($"User {oldUser.UserName} is now an {oldUser.Role}");
+                }
+            }
+            catch (Exception)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Server error");
+            }
+
+            return BadRequest();
+
+        }
+
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(Guid id)
         {
             try
