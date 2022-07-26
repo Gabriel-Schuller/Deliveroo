@@ -37,7 +37,7 @@ namespace Deliveroo.Service.Repositories
 
         public async Task<List<Address>> GetAllUserAddresses(Guid userId)
         {
-            var addresses= await _context.Orders.Where(o => o.UserID == userId).Select(a => a.Address).ToListAsync();
+            var addresses = await _context.Orders.Include(o => o.Address).Where(o => o.UserID == userId).Select(o => o.Address).ToListAsync();
             var user = await _context.Users.FindAsync(userId);
             addresses.Add(await GetAddressById(user.AddressID));
             return addresses;
