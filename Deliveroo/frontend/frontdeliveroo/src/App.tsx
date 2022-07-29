@@ -5,6 +5,7 @@ import NavigationBar from "./components/navigation/NavigationBar";
 import HomePage from "./components/pages/HomePage";
 import {Box} from "@mui/material";
 import {Routes, Route} from "react-router-dom";
+import SignIn from "./components/navigation/SigngIn";
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
 
                 <Route path={"/"} element={<HomePage/>}></Route>
                 <Route path={"/home"} element={<HomePage/>}></Route>
+                <Route path={"/signin"} element={<SignIn/>}></Route>
 
                 <Route path={"*"} element={<HomePage/>}></Route>
 
