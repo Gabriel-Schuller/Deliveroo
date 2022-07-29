@@ -364,6 +364,8 @@ FodyWeavers.xsd
 
 .Migrations
 Migrations
+.testcomponents
+testcomponents
 
 
 ### react ###
