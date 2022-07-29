@@ -1,5 +1,6 @@
 import React from 'react';
 import {Box, Paper, Typography, Stack} from "@mui/material";
+import {hover} from "@testing-library/user-event/dist/hover";
 
 interface Props {
     cityName: string;
@@ -8,7 +9,15 @@ interface Props {
 
 const CityCard = ({cityName, cityPicture}: Props) => {
     return (
-        <Stack spacing={0} direction={"column"} alignItems={"center"}>
+        <Stack spacing={0} direction={"column"} alignItems={"center"}
+               sx={{
+                   bgcolor: "gray",
+                   "&:hover": {
+                       backgroundColor: "black",
+                       opacity: "90%",
+                   }
+               }}
+        >
             <Paper
                 sx={{
                     display: "flex",
@@ -18,10 +27,9 @@ const CityCard = ({cityName, cityPicture}: Props) => {
                     width: "400px",
                     minWidth: "100px",
                     pl: 2,
-                    bgcolor: "gray",
+                    bgcolor: "inherit",
                     opacity: "90%",
                     border: "1px solid",
-
                 }}
             >
                 <Typography color={"white"} sx={{fontStyle: 'oblique'}}>
@@ -33,8 +41,8 @@ const CityCard = ({cityName, cityPicture}: Props) => {
                 height: "250px",
                 width: "400px",
                 backgroundImage: `url(${cityPicture})`,
-                backgroundSize: "100% 100%"
-
+                backgroundSize: "100% 100%",
+                bgcolor: "inherit"
             }}>
 
             </Box>
