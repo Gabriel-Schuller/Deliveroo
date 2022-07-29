@@ -12,24 +12,26 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import {Link, useNavigate} from "react-router-dom";
 
 
 const pages = ['Home', 'Ship', 'Contact'];
 const settings = ['Profile', 'Account', 'Logout'];
 
+
 const ResponsiveAppBar = () => {
+    let navigate = useNavigate();
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
+        //Use it for extra paths for admins
     };
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
-    };
+        //Use this for checks if user is Logged in/ is administrator
 
-    const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
     };
 
     const handleCloseUserMenu = () => {
@@ -40,7 +42,7 @@ const ResponsiveAppBar = () => {
         <AppBar position={"relative"} color={"secondary"}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <LocalShippingIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+                    <LocalShippingIcon sx={{display: {xs: 'none', md: 'flex'}, mr: 1}}/>
                     {/*Logo on normal screen*/}
                     <Typography
                         variant="h5"
@@ -49,19 +51,22 @@ const ResponsiveAppBar = () => {
                         href="/"
                         sx={{
                             mr: 2,
-                            display: { xs: 'none', md: 'flex' },
+                            display: {xs: 'none', md: 'flex'},
                             fontFamily: 'monospace',
                             fontWeight: 700,
                             letterSpacing: '.3rem',
                             color: 'inherit',
                             textDecoration: 'none',
                         }}
+                        onClick={() => {
+                            navigate("/")
+                        }}
                     >
                         SHIPPY
                     </Typography>
 
                     {/*small size PAGES hidden in menu*/}
-                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                    <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
                         <IconButton
                             size="large"
                             aria-label="account of current user"
@@ -70,7 +75,7 @@ const ResponsiveAppBar = () => {
                             onClick={handleOpenNavMenu}
                             color="inherit"
                         >
-                            <MenuIcon />
+                            <MenuIcon/>
                         </IconButton>
                         <Menu
                             id="menu-appbar"
@@ -85,21 +90,25 @@ const ResponsiveAppBar = () => {
                                 horizontal: 'left',
                             }}
                             open={Boolean(anchorElNav)}
-                            onClose={handleCloseNavMenu}
                             sx={{
-                                display: { xs: 'block', md: 'none' },
+                                display: {xs: 'block', md: 'none'},
                             }}
                         >
                             {pages.map((page) => (
-                                <MenuItem  key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
+                                <MenuItem key={page}>
+                                    <Typography textAlign="center"
+                                                onClick={() => {
+                                                    navigate(`/${page.toLowerCase()}`)
+                                                }}>
+                                        {page}
+                                    </Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
                     </Box>
 
                     {/*small size icon + logo*/}
-                    <LocalShippingIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+                    <LocalShippingIcon sx={{display: {xs: 'flex', md: 'none'}, mr: 1}}/>
                     <Typography
                         variant="h5"
                         noWrap
@@ -107,7 +116,7 @@ const ResponsiveAppBar = () => {
                         href=""
                         sx={{
                             mr: 2,
-                            display: { xs: 'flex', md: 'none' },
+                            display: {xs: 'flex', md: 'none'},
                             flexGrow: 1,
                             fontFamily: 'monospace',
                             fontWeight: 700,
@@ -115,17 +124,20 @@ const ResponsiveAppBar = () => {
                             color: 'inherit',
                             textDecoration: 'none',
                         }}
+                        onClick={() => {
+                            navigate("/")
+                        }}
                     >
                         SHIPPY
                     </Typography>
 
                     {/*normal size pages*/}
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                    <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
                         {pages.map((page) => (
                             <Button
                                 key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
+                                onClick={() => {navigate(`/${page.toLowerCase()}`)}}
+                                sx={{my: 2, color: 'white', display: 'block'}}
                             >
                                 {page}
                             </Button>
@@ -133,14 +145,14 @@ const ResponsiveAppBar = () => {
                     </Box>
 
                     {/*user profile*/}
-                    <Box sx={{ flexGrow: 0 }}>
+                    <Box sx={{flexGrow: 0}}>
                         <Tooltip title="User settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                            <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
                                 <Avatar></Avatar>
                             </IconButton>
                         </Tooltip>
                         <Menu
-                            sx={{ mt: '45px' }}
+                            sx={{mt: '45px'}}
                             id="menu-appbar"
                             anchorEl={anchorElUser}
                             anchorOrigin={{
@@ -156,7 +168,7 @@ const ResponsiveAppBar = () => {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                <MenuItem key={setting} onClick={() => {navigate(`/${setting.toLowerCase()}`)}}>
                                     <Typography textAlign="center">{setting}</Typography>
                                 </MenuItem>
                             ))}
