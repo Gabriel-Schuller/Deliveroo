@@ -25,7 +25,7 @@ namespace Deliveroo.Controllers
         private readonly IBaseRepository _baseRepository;
         private readonly JwtService _jwtService;
 
-        public UsersController(IUserRepository repository, LinkGenerator linkGenerator, IMapper mapper, 
+        public UsersController(IUserRepository repository, LinkGenerator linkGenerator, IMapper mapper,
             IBaseRepository baseRepository, JwtService jwtService)
         {
             _repository = repository;
@@ -67,8 +67,9 @@ namespace Deliveroo.Controllers
 
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Server error");
             }
+        }
 
-            [HttpGet("/all-admins")]
+        [HttpGet("/all-admins")]
         [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<List<User>>> GetAllAdmins()
         {
