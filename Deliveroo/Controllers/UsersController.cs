@@ -53,7 +53,22 @@ namespace Deliveroo.Controllers
             }
         }
 
-        [HttpGet("/all-admins")]
+        [HttpGet("/email/{email}")]
+        [Authorize]
+        public async Task<ActionResult<User>> GetUserWithEmail(string email)
+        {
+            try
+            {
+                var user = await _repository.GetUserByEmail(email);
+                return user;
+            }
+            catch (Exception)
+            {
+
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Server error");
+            }
+
+            [HttpGet("/all-admins")]
         [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<List<User>>> GetAllAdmins()
         {
