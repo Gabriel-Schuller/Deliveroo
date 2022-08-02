@@ -12,19 +12,19 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate, Link} from "react-router-dom";
+import axios from "axios";
 
 
 const theme = createTheme();
 
 export default function SignIn() {
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        let user={EmailAddress: data.get('email'), Password: data.get('password')};
+        const response= await axios.post("https://localhost:44338/api/Users/login", user, {withCredentials: true});
+        console.log(response.data);
     };
 
     let navigate= useNavigate();
