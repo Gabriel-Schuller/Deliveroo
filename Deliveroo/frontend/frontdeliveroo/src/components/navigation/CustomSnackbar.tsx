@@ -15,7 +15,7 @@ export const CustomSnackbar = ({open, message, color} : Props) => {
         <>
             <Snackbar
                 open={open}
-                autoHideDuration={4000}
+                autoHideDuration={200}
                 message= {message}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
             >

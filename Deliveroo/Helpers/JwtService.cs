@@ -24,8 +24,7 @@ namespace Deliveroo.Helpers
             var claims = new[]
             {
                 new Claim(ClaimTypes.Email, user.EmailAddress),
-                new Claim(ClaimTypes.Role, user.Role),
-                new Claim(ClaimTypes.MobilePhone, user.UserPhoneNumber)
+                new Claim(ClaimTypes.Role, user.Role)
 
             };
 
