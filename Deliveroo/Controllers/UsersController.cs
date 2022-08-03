@@ -54,7 +54,7 @@ namespace Deliveroo.Controllers
         }
 
         [HttpGet("/email/{email}")]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<ActionResult<User>> GetUserWithEmail(string email)
         {
             try

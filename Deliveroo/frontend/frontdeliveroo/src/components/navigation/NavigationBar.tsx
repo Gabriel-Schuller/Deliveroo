@@ -16,7 +16,7 @@ import {Link, useNavigate} from "react-router-dom";
 
 
 const pages = ['Home', 'Ship', 'Contact'];
-const settings = ['Profile', 'Account', 'Logout'];
+const settings = ['Account', 'Logout'];
 
 
 const ResponsiveAppBar = () => {
