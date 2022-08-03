@@ -7,7 +7,17 @@ export interface IUserInfo {
     userName: string;
     userEmail: string;
     userPassword: string;
+    userPhoneNumber: string;
 }
+
+
+export interface IUserModel {
+    userName: string,
+    emailAddress: string,
+    password: string,
+    userPhoneNumber: string
+}
+
 
 export interface IAdress {
     city: string;
@@ -24,6 +34,7 @@ export interface IUserAccount {
     userName: string;
     userEmail: string;
     userPassword: string;
+    userPhoneNumber: string;
     city: string;
     postalCode: string;
     streetName: string;

@@ -4,7 +4,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 const ErrorPage = () => {
     return (
         <div>
-            <CircularProgress color={"secondary"} />
+            <CircularProgress color={"secondary"} sx={{position: "relative" ,top: 90}}/>
         </div>
     );
 };
