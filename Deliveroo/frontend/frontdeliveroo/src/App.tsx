@@ -10,6 +10,7 @@ import SignUp from "./components/navigation/SignUp";
 import Account from "./components/pages/Account";
 import ErrorPage from "./components/pages/ErrorPage";
 import TestComponentFormik from "./testcomponents/TestComponentFormik";
+import Logout from "./components/navigation/Logout";
 
 function App() {
     return (
@@ -22,6 +23,7 @@ function App() {
                 <Route path={"/signin"} element={<SignIn/>}></Route>
                 <Route path={"/signup"} element={<SignUp/>}></Route>
                 <Route path={"/account"} element={<Account/>}></Route>
+                <Route path={"/logout"} element={<Logout/>}></Route>
 
                 <Route path={"*"} element={<HomePage/>}></Route>
 
