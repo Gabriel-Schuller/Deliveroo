@@ -30,7 +30,7 @@ namespace Deliveroo.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<List<Address>>> Get()
         {
             try
@@ -46,6 +46,7 @@ namespace Deliveroo.Controllers
         }
 
         [HttpGet("/getbyuser/{userID}")]
+        [Authorize]
         public async Task<ActionResult<List<Address>>> GetAddressByUser(Guid userID)
         {
             try
@@ -61,7 +62,7 @@ namespace Deliveroo.Controllers
         }
 
         [HttpGet("/city/{city}")]
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<List<Address>>> GetAddressByCity(string city)
         {
             try
@@ -77,7 +78,7 @@ namespace Deliveroo.Controllers
         }
 
         [HttpGet("/postalcode/{code}")]
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<List<Address>>> GetAddressByCode(string code)
         {
             try
@@ -91,6 +92,7 @@ namespace Deliveroo.Controllers
         }
 
         [HttpGet("/order/{orderId}")]
+        [Authorize]
         public async Task<ActionResult<Address>> GetAddressByOrderID(Guid orderId)
         {
             try
@@ -145,6 +147,7 @@ namespace Deliveroo.Controllers
         }
 
         [HttpPut("{addressId}")]
+        [Authorize]
         public async Task<ActionResult<AddressModel>> UpdateAddress(Guid addressId, AddressModel model)
         {
             try

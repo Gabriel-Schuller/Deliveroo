@@ -198,7 +198,7 @@ namespace Deliveroo.Controllers
 
 
         [HttpPut("{id}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ActionResult<UserModel>> Put(Guid id, UserModel model)
         {
             try
