@@ -30,6 +30,8 @@ namespace Deliveroo.Data.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime OrderDate { get; set; } = DateTime.UtcNow;
 
+        public Guid AddressID { get; set; }
+
         public Address Address { get; set; }
 
         public int AproxCost { get; set; }

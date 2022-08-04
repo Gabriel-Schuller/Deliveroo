@@ -45,7 +45,7 @@ namespace Deliveroo.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AddressID")
+                    b.Property<Guid>("AddressID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AproxCost")
@@ -117,7 +117,9 @@ namespace Deliveroo.Migrations
                 {
                     b.HasOne("Deliveroo.Data.Entities.Address", "Address")
                         .WithMany()
-                        .HasForeignKey("AddressID");
+                        .HasForeignKey("AddressID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Deliveroo.Data.Entities.User", "User")
                         .WithMany("Order")

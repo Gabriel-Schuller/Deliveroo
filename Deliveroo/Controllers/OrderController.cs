@@ -19,13 +19,15 @@ namespace Deliveroo.Controllers
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
         private readonly IBaseRepository _baseRepository;
+        private readonly IUserRepository _userRepository;
 
-        public OrderController(IOrderRepository repository, LinkGenerator linkGenerator, IMapper mapper, IBaseRepository baseRepository)
+        public OrderController(IOrderRepository repository, LinkGenerator linkGenerator, IMapper mapper, IBaseRepository baseRepository, IUserRepository userRepository)
         {
             _repository = repository;
             _linkGenerator = linkGenerator;
             _mapper = mapper;
             _baseRepository = baseRepository;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
@@ -102,12 +104,14 @@ namespace Deliveroo.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<ActionResult<OrderModel>> AddOrder([FromBody] OrderModel model)
+        [HttpPost("{userEmail}")]
+        public async Task<ActionResult<OrderModel>> AddOrder(string userEmail, OrderModel model)
         {
             try
             {
                 var order = _mapper.Map<Order>(model);
+                var user =await _userRepository.GetUserByEmail(userEmail);
+                order.UserID = user.UserID;
                 order.AproxCost = _repository.CalculatePrice(order);
                 _baseRepository.Add(order);
                 if (await _baseRepository.SaveChangesAsync())

@@ -6,6 +6,15 @@ namespace Deliveroo.Models
 {
     public class OrderModel
     {
+
+        [Required]
+        [Range(1, 10)]
+        public int NumberOfBaggages { get; set; }
+
+        [Required]
+        [Range(5, 200)]
+        public int TotalWeight { get; set; }
+
         [Required]
         public string Destination { get; set; }
 
@@ -14,6 +23,10 @@ namespace Deliveroo.Models
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime OrderDate { get; set; } = DateTime.UtcNow;
+
+        public Guid AddressID { get; set; }
+
+
 
 
     }
