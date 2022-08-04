@@ -55,10 +55,6 @@ namespace Deliveroo.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Destination")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("NumberOfBaggages")
                         .HasColumnType("int");
 

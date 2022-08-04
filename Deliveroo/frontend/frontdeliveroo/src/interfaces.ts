@@ -39,3 +39,11 @@ export interface IUserAccount {
     postalCode: string;
     streetName: string;
 }
+
+export interface IOrder {
+    numberOfBaggages: number,
+    totalWeight: number,
+    contactPhoneNumber: string,
+    addressID: string,
+
+}

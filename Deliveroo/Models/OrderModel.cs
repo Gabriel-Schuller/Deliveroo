@@ -15,8 +15,6 @@ namespace Deliveroo.Models
         [Range(5, 200)]
         public int TotalWeight { get; set; }
 
-        [Required]
-        public string Destination { get; set; }
 
         [Required]
         public string ContactPhoneNumber { get; set; }
