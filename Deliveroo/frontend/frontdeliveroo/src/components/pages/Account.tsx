@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Formik, Form, Field, ErrorMessage} from "formik";
 import * as Yup from "yup"
-import axios from "axios";
+import axios from "../../helpers/axios/AxiosHelper";
 import {IAdress, IUserAccount, IUserInfo, IUserModel, IUserProfile} from "../../interfaces";
 import AccountForm from "../formcomponents/AccountForm";
 import ErrorPage from "./ErrorPage";
@@ -23,7 +23,7 @@ const Account = () => {
         return async () => {
             let userEmail = sessionStorage.getItem("userEmail");
             if (userEmail !== null) {
-                let response = await axios.get(`https://localhost:44338/email/${userEmail}`);
+                let response = await axios.get(`email/${userEmail}`);
                 let user = response.data;
                 setUserId(user.userID);
                 setAddressId(user.addressID);
@@ -34,7 +34,7 @@ const Account = () => {
                     userPhoneNumber: user.userPhoneNumber || ""
                 };
                 let neededId = user.addressID;
-                let addressResponse = await axios.get(`https://localhost:44338/api/Address/${neededId}`);
+                let addressResponse = await axios.get(`api/Address/${neededId}`);
                 let userAddress: IAdress = addressResponse.data;
                 let userAccount: IUserAccount = {...userAddress, ...userInfo}
                 setProfile(userAccount);
@@ -50,7 +50,7 @@ const Account = () => {
         if (profile) {
             if (address.city !== profile.city || address.streetName !== profile.streetName
                 || address.postalCode !== profile.postalCode) {
-                let addressResponse = axios.put(`https://localhost:44338/api/Address/${addressId}`, address, {withCredentials: true})
+                let addressResponse = axios.put(`api/Address/${addressId}`, address, {withCredentials: true})
             }
 
             let userInfo: IUserModel = {
@@ -61,7 +61,7 @@ const Account = () => {
             }
             if (userInfo.userName !== profile.userName || userInfo.emailAddress !== profile.userEmail
                 || userInfo.userPhoneNumber !== profile.userPhoneNumber) {
-                let userResponse = axios.put(`https://localhost:44338/api/Users/${userId}`, userInfo, {withCredentials: true})
+                let userResponse = axios.put(`api/Users/${userId}`, userInfo, {withCredentials: true})
             }
             setSubmit(!submit)
         }

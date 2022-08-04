@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useNavigate, Link} from "react-router-dom";
-import axios from "axios";
+import axios from "../../helpers/axios/AxiosHelper";
 import {useState} from "react";
 import {CustomSnackbar} from "./CustomSnackbar";
 
@@ -33,9 +33,9 @@ export default function SignUp() {
         let name: string = String(data.get("name"))
         let user = {EmailAddress: emailAddress, Password: password, UserName: name};
         try {
-            const response = await axios.post("https://localhost:44338/api/Users/register", user, {withCredentials: true});
+            const response = await axios.post("api/Users/register", user, {withCredentials: true});
             setRegisterFail(false);
-            const loginResponse = await axios.post("https://localhost:44338/api/Users/login", user, {withCredentials: true});
+            const loginResponse = await axios.post("api/Users/login", user, {withCredentials: true});
             sessionStorage.setItem("jwtBearer", loginResponse.data);
             sessionStorage.setItem("userEmail", emailAddress);
             navigate("/home");
