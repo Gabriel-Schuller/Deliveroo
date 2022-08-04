@@ -5,6 +5,7 @@ import {IUserAccount} from "../../interfaces";
 import {Box, Button, Paper, Stack, Typography} from "@mui/material";
 import {TextField} from "formik-mui";
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
+import AddressForm from "./AddressForm";
 
 interface Props {
     initialValues: IUserAccount;
@@ -44,21 +45,7 @@ const AccountForm = ({initialValues, onSubmit}: Props) => {
                                        variant={"filled"} name={"userPhoneNumber"}
                                        fullWidth sx={{maxWidth: "300px"}}/>
 
-                                <Box sx={{width: "100%"}}>
-                                    <Typography variant={"caption"} gutterBottom>Main Address</Typography>
-                                    <Stack spacing={2} direction={"column"} alignItems={"center"}>
-
-                                        <Field component={TextField} label={"City"} type={"text"} id={"city"}
-                                               variant={"filled"} name={"city"}
-                                               fullWidth sx={{maxWidth: "300px"}}/>
-                                        <Field component={TextField} label={"Street"} type={"text"} id={"street"}
-                                               variant={"filled"} name={"streetName"}
-                                               fullWidth sx={{maxWidth: "300px"}}/>
-                                        <Field component={TextField} label={"Postal Code"} type={"text"}
-                                               variant={"filled"} id={"postalCode"} name={"postalCode"}
-                                               fullWidth sx={{maxWidth: "150px"}}/>
-                                    </Stack>
-                                </Box>
+                                <AddressForm title={"Main Address"} required={false}/>
 
                                 <Button type={"submit"} color={"secondary"} size='large'
                                         variant={"contained"} endIcon={<ChangeCircleIcon/>}

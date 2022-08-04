@@ -45,5 +45,13 @@ export interface IOrder {
     totalWeight: number,
     contactPhoneNumber: string,
     addressID: string,
+}
 
+export interface IOrderForm {
+    numberOfBaggages: number,
+    totalWeight: number,
+    contactPhoneNumber: string,
+    city: string;
+    postalCode: string;
+    streetName: string;
 }

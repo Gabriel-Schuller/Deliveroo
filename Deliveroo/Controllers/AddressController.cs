@@ -122,7 +122,7 @@ namespace Deliveroo.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<AddressModel>> AddAddress([FromBody] AddressModel model)
+        public async Task<ActionResult<Address>> AddAddress([FromBody] AddressModel model)
         {
             try
             {
@@ -135,7 +135,7 @@ namespace Deliveroo.Controllers
                     {
                         return BadRequest("Could not use current id");
                     }
-                    return Created(location, _mapper.Map<AddressModel>(address));
+                    return Created(location, address);
                 }
             }
             catch (Exception)
