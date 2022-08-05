@@ -27,7 +27,7 @@ namespace Deliveroo.Service.Repositories
 
         public async Task<Order> GetOrderById(Guid orderId)
         {
-            return await _context.Orders.FindAsync(orderId);
+            return await _context.Orders.Include(o => o.Address).Where(o => o.OrderID == orderId).FirstOrDefaultAsync();
         }
 
         public async Task<List<Order>> GetUserOrders(Guid id)

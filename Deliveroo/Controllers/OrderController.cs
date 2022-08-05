@@ -105,7 +105,7 @@ namespace Deliveroo.Controllers
         }
 
         [HttpPost("{userEmail}")]
-        public async Task<ActionResult<Order>> AddOrder(string userEmail, OrderModel model)
+        public async Task<ActionResult<OrderModel>> AddOrder(string userEmail, OrderModel model)
         {
             try
             {
@@ -121,7 +121,7 @@ namespace Deliveroo.Controllers
                     {
                         return BadRequest("Could not use current id");
                     }
-                    return Created(location, order);
+                    return Created(location, _mapper.Map<OrderModel>(order));
                 }
             }
             catch (Exception)
