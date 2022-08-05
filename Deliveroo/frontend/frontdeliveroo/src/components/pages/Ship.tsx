@@ -44,7 +44,6 @@ const Ship = () => {
         if (checked) {
             let response = await axios.get(`email/${userEmail}`);
             addressId=response.data.addressID;
-            console.log("addressid: ", response.data.addressID)
         } else {
             let address: IAdress = {city: values.city, postalCode: values.postalCode, streetName: values.streetName};
             let response = await axios.post("api/Address", address, {withCredentials: true});
@@ -55,6 +54,7 @@ const Ship = () => {
         contactPhoneNumber: values.contactPhoneNumber, addressID: addressId};
 
         let orderResponse= await axios.post(`api/Order/${userEmail}`, order, {withCredentials: true});
+
     }
 
     return (
