@@ -53,8 +53,8 @@ const Ship = () => {
         let order:IOrder = {numberOfBaggages: values.numberOfBaggages, totalWeight: values.totalWeight,
         contactPhoneNumber: values.contactPhoneNumber, addressID: addressId};
         let orderResponse= await axios.post(`api/Order/${userEmail}`, order, {withCredentials: true});
-        console.log(orderResponse.data)
-
+        let orderId= orderResponse.data;
+        navigate(`/order-complete/${orderId}`);
     }
 
     return (

@@ -41,8 +41,6 @@ export default function SignUp() {
             navigate("/home");
 
         } catch (err: any) {
-            console.log(err)
-            console.log(err.response)
             setRegisterFail(true)
             setRegistrationError(err.response.data)
         }
