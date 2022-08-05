@@ -55,7 +55,7 @@ namespace Deliveroo.Service.Repositories
             {
                 calculatedPrice += Price;
             }
-            return 1;
+            return calculatedPrice;
         }
     }
 }

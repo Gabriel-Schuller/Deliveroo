@@ -8,37 +8,53 @@ import React, {useState} from "react";
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import AddressForm from "../formcomponents/AddressForm";
 import axios from "../../helpers/axios/AxiosHelper";
+import {useNavigate} from "react-router-dom";
 
 
 const validationSchema = Yup.object({
     contactPhoneNumber: Yup.string().min(10, "Phone Number must be 10(RO) or 11(UK) digits!")
         .max(11, "Phone Number must be 10(RO) or 11(UK) digits!").required("Required"),
     numberOfBaggages: Yup.number().positive().integer().min(1, "Must be between 1-10")
-        .max(10,"Must be between 1-10").required("Required"),
-    totalWeight: Yup.number().positive().integer().min(5,"Must be between 5-200")
-        .max(200,"Must be between 5-200").required("Required"),
-    city: Yup.string().min(2,"Quite the short city.. Check please").required("Required"),
-    postalCode: Yup.string().min(2,"Too short!").required("Required"),
-    streetName: Yup.string().min(2,"Quite a short Street name.. Check please").required("Required")
+        .max(10, "Must be between 1-10").required("Required"),
+    totalWeight: Yup.number().positive().integer().min(5, "Must be between 5-200")
+        .max(200, "Must be between 5-200").required("Required"),
+    city: Yup.string().min(2, "Quite the short city.. Check please").required("Required"),
+    postalCode: Yup.string().min(2, "Too short!").required("Required"),
+    streetName: Yup.string().min(2, "Quite a short Street name.. Check please").required("Required")
 })
 
 
 const Ship = () => {
-
+    const navigate= useNavigate();
     const [checked, setChecked] = useState(false);
 
     const initialValues: IOrderForm = {
         numberOfBaggages: 1,
         totalWeight: 5,
         contactPhoneNumber: "",
-        city: "",
-        postalCode: "",
-        streetName: "",
+        city: "RO",
+        postalCode: "00",
+        streetName: "00",
     }
 
 
     const submit = async (values: IOrderForm) => {
+        let userEmail = sessionStorage.getItem("userEmail");
+        let addressId="";
+        if (checked) {
+            let response = await axios.get(`email/${userEmail}`);
+            addressId=response.data.addressID;
+            console.log("addressid: ", response.data.addressID)
+        } else {
+            let address: IAdress = {city: values.city, postalCode: values.postalCode, streetName: values.streetName};
+            let response = await axios.post("api/Address", address, {withCredentials: true});
+            addressId=response.data.addressID;
+        }
 
+        let order:IOrder = {numberOfBaggages: values.numberOfBaggages, totalWeight: values.totalWeight,
+        contactPhoneNumber: values.contactPhoneNumber, addressID: addressId};
+
+        let orderResponse= await axios.post(`api/Order/${userEmail}`, order, {withCredentials: true});
     }
 
     return (

@@ -10,7 +10,7 @@ namespace Deliveroo.Data
         {
             this.CreateMap<Address, AddressModel>().ReverseMap();
             this.CreateMap<User, UserModel>().ReverseMap();
-            this.CreateMap<Order, AddressModel>().ReverseMap();
+            this.CreateMap<Order, OrderModel>().ReverseMap();
         }
     }
 }

@@ -3,11 +3,13 @@ import {Box, Button, Grid, Paper, Stack, Typography} from "@mui/material";
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import CityGrid from "../CityGrid";
+import {useNavigate} from "react-router-dom";
 
 const picture1 = "https://www.ups.com/assets/resources/webcontent/images/business-shipping-B-1187659-Q421.jpg"
 
 
 const HomePage = () => {
+    const navigate=useNavigate();
     return (
         <Stack spacing={4} direction={"column"} alignItems={"center"}>
             <Paper sx={{padding: '32px'}} elevation={2}>
@@ -62,7 +64,8 @@ const HomePage = () => {
                                 long as it is within a 30 mile radius.
                             </Typography>
                         </Box>
-                        <Button color={"warning"} size={"large"} variant="contained" endIcon={<RocketLaunchIcon/>}>
+                        <Button color={"warning"} size={"large"} variant="contained" endIcon={<RocketLaunchIcon/>}
+                        onClick={()=> navigate("/ship")}>
                             Ship now
                         </Button>
                     </Stack>
